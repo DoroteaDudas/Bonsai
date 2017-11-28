@@ -4,6 +4,12 @@
 #define DIM 3
 typedef float Real;
 
+// Units from runtime/README:
+// - distance: 1 kpc
+// - velocity: 100 km/s
+// - mass: 2.324876e9 Msun
+// - time: 9.778145 Myr
+
 struct head {
 
     head(double time = 0.0, int nbodies = 0, int ndim = 0, int nsph = 0, int ndark = 0, int nstar = 0)
@@ -40,7 +46,7 @@ struct dark_particle
     float pos[DIM];
     float vel[DIM];
     float eps;
-    int phi;
+    int phi;  // FileIO.cpp: store particle id where potential was stored
 };
 
 struct star_particle {
@@ -64,7 +70,7 @@ struct star_particle {
     float metals;
     float tform;
     float eps;
-    int phi;
+    int phi;  // FileIO.cpp: store particle id where potential was stored
 };
 
 #endif // TIPSY_H
