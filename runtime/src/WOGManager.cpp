@@ -92,17 +92,18 @@ void WOGManager::read_galaxies(std::string const& path)
   	  galaxy.pos_dust, galaxy.vel_dust, galaxy.ids_dust, 1, 1, false);
 
   	real4 cm = galaxy.getCenterOfMass();
-  	std::cout << "Center of mass = " << cm.x << " " << cm.y << " " << cm.z << std::endl;
+  	std::cout << "  Center of mass = " << cm.x << " " << cm.y << " " << cm.z << std::endl;
   	real4 tv = galaxy.getTotalVelocity();
-  	std::cout << "Total_velocity = " << tv.x << " " << tv.y << " " << tv.z << std::endl;
+  	std::cout << "  Total_velocity = " << tv.x << " " << tv.y << " " << tv.z << std::endl;
 
+        std::cout << "  centering() and steady()" << std::endl;
   	galaxy.centering();
   	galaxy.steady();
 
   	cm = galaxy.getCenterOfMass();
-  	std::cout << "Center of mass = " << cm.x << " " << cm.y << " " << cm.z << std::endl;
+  	std::cout << "  Center of mass = " << cm.x << " " << cm.y << " " << cm.z << std::endl;
   	tv = galaxy.getTotalVelocity();
-  	std::cout << "Total_velocity = " << tv.x << " " << tv.y << " " << tv.z << std::endl;
+  	std::cout << "  Total_velocity = " << tv.x << " " << tv.y << " " << tv.z << std::endl;
 
   	galaxies.push_back(galaxy);
   }
