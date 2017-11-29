@@ -307,7 +307,8 @@ class BonsaiDemo
 {
 public:
   BonsaiDemo(octree *tree, octree::IterationData &idata,
-    std::string const& wogPath, int wogPort, real wogCameraDistance, real wogDeletionRadiusFactor)
+    std::string const& wogPath, int wogPort, real wogCameraDistance, real wogDeletionRadiusFactor,
+    int reduce_bodies_factor)
     : m_tree(tree), m_idata(idata), iterationsRemaining(true),
       //m_renderer(tree->localTree.n + tree->localTree.n_dust),
       m_renderer(tree->localTree.n + tree->localTree.n_dust, MAX_PARTICLES),
@@ -348,7 +349,8 @@ public:
 #else
       m_enableStats(true),
 #endif
-      m_wogManager(tree, wogPath, wogPort, 1024, 768, m_fov, m_farZ, wogCameraDistance, wogDeletionRadiusFactor)
+      m_wogManager(tree, wogPath, wogPort, 1024, 768, m_fov, m_farZ, wogCameraDistance, wogDeletionRadiusFactor,
+                   reduce_bodies_factor)
   {
     m_windowDims = make_int2(1024, 768);
     m_cameraTrans = make_float3(0, -2, -100);
@@ -1115,7 +1117,7 @@ public:
     float distanceToCenter = radius / sinf(0.5f * fovRads);
     
     //m_cameraTrans = center + make_float3(0, 0, -distanceToCenter*0.2f);
-    m_cameraTrans = make_float3(0, 0, -500);
+    m_cameraTrans = make_float3(0, 0, -100);
     printf("camera trans %f %f %f \n",m_cameraTrans.x, m_cameraTrans.y, m_cameraTrans.z);
 
 #if 0
@@ -1912,11 +1914,13 @@ void initGL(int argc, char** argv, const char *gameMode, bool &stereo, bool full
 
 void initAppRenderer(int argc, char** argv, octree *tree, octree::IterationData &idata,
 		             bool showFPS, bool stereo, std::string const& wogPath, int wogPort,
-		             real wogCameraDistance, real wogDeletionRadiusFactor)
+		             real wogCameraDistance, real wogDeletionRadiusFactor,
+                             int reduce_bodies_factor)
 {
   displayFps = showFPS;
   //initGL(argc, argv);
-  theDemo = new BonsaiDemo(tree, idata, wogPath, wogPort, wogCameraDistance, wogDeletionRadiusFactor);
+  theDemo = new BonsaiDemo(tree, idata, wogPath, wogPort, wogCameraDistance, wogDeletionRadiusFactor,
+                           reduce_bodies_factor);
   if (stereo)
     theDemo->toggleStereo(); //SV assuming stereo is set to disable by default.
   glutMainLoop();

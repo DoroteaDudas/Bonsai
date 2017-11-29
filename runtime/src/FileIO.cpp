@@ -28,6 +28,7 @@ void read_tipsy_file_parallel(std::vector<real4> &bodyPositions, std::vector<rea
   */
 
 
+  std::cout << "  reduce_bodies_factor = " << reduce_bodies_factor << std::endl;
   char fullFileName[256];
   if(restart)
     sprintf(fullFileName, "%s%d", fileName.c_str(), rank);

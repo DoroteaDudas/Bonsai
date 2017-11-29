@@ -810,8 +810,8 @@ int main(int argc, char** argv)
     /// WarOfGalaxies: Deactivate unneeded flags if WarOfGalaxies path will be used
     if (!wogPath.empty()) {
       throw_if_flag_is_used(opt, {{"direct", "restart", "displayfps", "diskmode", "stereo", "prepend-rank"}});
-      throw_if_option_is_used(opt, {{"plummer", "milkyway", "mwfork", "sphere", "dt", "tend", "iend",
-        "snapname", "snapiter", "rmdist", "valueadd", "rebuild", "reducebodies", "reducedust", "gameMode"}});
+      throw_if_option_is_used(opt, {{"plummer", "milkyway", "mwfork", "sphere", "tend", "iend",
+        "snapname", "snapiter", "rmdist", "valueadd", "rebuild", "reducedust", "gameMode"}});
     }
 
 #undef ADDUSAGE
@@ -1369,7 +1369,7 @@ int main(int argc, char** argv)
 #ifdef USE_OPENGL
   octree::IterationData idata;
   initAppRenderer(argc, argv, tree, idata, displayFPS, stereo,
-	wogPath, wogPort, wogCameraDistance, wogDeletionRadiusFactor);
+	wogPath, wogPort, wogCameraDistance, wogDeletionRadiusFactor, reduce_bodies_factor);
   LOG("Finished!!! Took in total: %lg sec\n", tree->get_time()-t0);
 #else
   tree->mpiSync();
