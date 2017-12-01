@@ -1,3 +1,4 @@
+#include <algorithm>  // std::max
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -63,9 +64,9 @@ int main(int argc, char* argv[])
                 // dark matter
 
                 std::cout << "dm particle " << id_d << " with mass " << mass << std::endl;
-                dark_particle d(mass/MSUN, 
-                                posx/KPC, posy/KPC, posz/KPC, 
-                                velx/KMS, vely/KMS, velz/KMS, 
+                dark_particle d(mass/MSUN,
+                                posx/KPC, posy/KPC, posz/KPC,
+                                velx/KMS, vely/KMS, velz/KMS,
                                 0.0f, 
                                 id_d);
                 m_d += mass/MSUN;
@@ -76,12 +77,16 @@ int main(int argc, char* argv[])
             } else if (flag == 4) {
                 // star
 
+                // test hack:
+                float L_max = std::max(std::max(L_B, L_G), L_R);
                 std::cout << "star particle " << id_s << " with mass " << mass << std::endl;
                 star_particle s(mass/MSUN, 
-                                posx/KPC, posy/KPC, posz/KPC, 
-                                velx/KMS, vely/KMS, velz/KMS, 
-                                0.0f, 0.0f, 0.0f, 
-                                id_s);
+                                posx/KPC, posy/KPC, posz/KPC,
+                                velx/KMS, vely/KMS, velz/KMS,
+                                0.0f, 0.0f, 0.0f,
+                                id_s,
+                                L_R/L_max, L_G/L_max, L_B/L_max, 1.0   // rgba 0...1
+                               );
                 m_s += mass/MSUN;
                 vs.push_back(s);  // add to end of vector
 
