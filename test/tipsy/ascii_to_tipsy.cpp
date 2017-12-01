@@ -5,8 +5,8 @@
 #include <vector>
 #include "tipsy.h"
 
-const int INDEX_S_START = 100000000;
 const int INDEX_D_START = 200000000;
+const int INDEX_S_START = 100000000;
 
 // unit definitions from runtime/README
 // Msun, km/s and kpc in internal code units

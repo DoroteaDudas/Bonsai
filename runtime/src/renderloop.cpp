@@ -301,7 +301,7 @@ void glPrintf(float x, float y, const char* format, ...)
 }
 
 // reducing to improve perf
-#define MAX_PARTICLES 700000
+#define MAX_PARTICLES 1000000
 
 class BonsaiDemo
 {
@@ -594,7 +594,6 @@ public:
         m_renderer.setNumberOfParticles(m_tree->localTree.n + m_tree->localTree.n_dust);
         fitCamera(); //Try to get the model back in view
       }
-      
       getBodyData();
       getBodyDataTime = GetTimer();
 
@@ -1283,7 +1282,6 @@ public:
 		}
 
 		LOGF(stderr, "sunIdx= %d  m31Idx= %d \n", sunIdx, m31Idx);
-
 		m_renderer.setColors((float*)colors);
 #else  /* eg: assign colours on the device */
 		const float Tcurrent = m_tree->get_t_current() * 9.78f;
@@ -1389,7 +1387,7 @@ public:
     //dustColor = make_float4(0.0f, 0.2f, 0.1f, 0.0f);  // green
     //dustColor = make_float4(0.0f, 0.0f, 0.0f, 0.0f);  // black
 
-    darkMatterColor = make_float4(0.0f, 0.2f, 0.4f, 3.0f);      // blue
+    darkMatterColor = make_float4(1.0f, 1.0f, 0.0f, 5.0f);      // blue
 
     m_colorParams = new ParamListGL("colors");
 #if 0
