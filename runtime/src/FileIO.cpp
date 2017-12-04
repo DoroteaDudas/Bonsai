@@ -98,7 +98,7 @@ void read_tipsy_file_parallel(std::vector<real4> &bodyPositions, std::vector<rea
       velocity.y        = d.vel[1];
       velocity.z        = d.vel[2];
       idummy            = d.phi;
-      color.x		= 0.0; // no colors from tipsy for dark matter
+      color.x		= 1.0; // no colors from tipsy for dark matter
       color.y		= 0.0;
       color.z		= 0.0;    
       color.w		= 1.0;      
@@ -170,8 +170,8 @@ void read_tipsy_file_parallel(std::vector<real4> &bodyPositions, std::vector<rea
         continue;
       bodyPositions.push_back(positions);
       bodyVelocities.push_back(velocity);
+      bodyColors.push_back(color);
       bodiesIDs.push_back(idummy);
-//       bodyRgba.push_back(rgba);
     #endif
 
     particleCount++;
@@ -181,7 +181,7 @@ void read_tipsy_file_parallel(std::vector<real4> &bodyPositions, std::vector<rea
     {
       if(bodyPositions.size() > perProc && procCntr != procs)
       {
-    	if (tree) tree->ICSend(procCntr,  &bodyPositions[0], &bodyVelocities[0],  &bodiesIDs[0], (int)bodyPositions.size());
+    	if (tree) tree->ICSend(procCntr,  &bodyPositions[0], &bodyVelocities[0], &bodyColors[0],  &bodiesIDs[0], (int)bodyPositions.size());
         procCntr++;
 
         bodyPositions.clear();

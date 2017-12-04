@@ -222,6 +222,9 @@ json WOGManager::execute_json(std::string const& json_request_string)
     std::vector<double> vector_velocity = json_request["velocity"].as<std::vector<double>>();
     if (vector_velocity.size() > 3) throw std::runtime_error("Invalid dimension of velocity vector");
 
+//     std::vector<double> vector_color = json_request["color"].as<std::vector<double>>();
+//     if (vector_color.size() > 3) throw std::runtime_error("Invalid dimension of color vector");    
+    
     real4 position = make_real4(0.0, 0.0, 0.0, 0.0);
 
     if (vector_position.size() > 0) {
@@ -255,12 +258,27 @@ json WOGManager::execute_json(std::string const& json_request_string)
     if (vector_velocity.size() > 2) {
       velocity.z = vector_velocity[2] * window_height / simulation_plane_height;
     }
+    
+//     //color
+//     real4 color = make_real4(0.0, 0.0, 0.0, 0.0);
+// 
+//     if (vector_color.size() > 0) {
+//       color.x = vector_color[0] * window_width / simulation_plane_width;
+//     }
+//     if (vector_color.size() > 1) {
+//       color.y = vector_color[1] * window_height / simulation_plane_height;
+//     }
+//     if (vector_color.size() > 2) {
+//       color.z = vector_color[2] * window_height / simulation_plane_height;
+//     }
+    
 
     #ifdef DEBUG_PRINT
       std::cout << "user_id: " << user_id << std::endl;
       std::cout << "galaxy_id: " << galaxy_id << std::endl;
       std::cout << "position: " << position.x << " " << position.y << " " << position.z << std::endl;
       std::cout << "velocity: " << velocity.x << " " << velocity.y << " " << velocity.z << std::endl;
+//       std::cout << "color: " << color.x << " " << color.y << " " << color.z << std::endl;
     #endif
 
 	Galaxy galaxy = galaxies[galaxy_id];
@@ -270,6 +288,7 @@ json WOGManager::execute_json(std::string const& json_request_string)
     // Since the particle ids are not needed for the simulation, we use them to store the user_id in the first digit.
 	for (auto & id : galaxy.ids) id = id - id % 10 + user_id;
 
+    std::cout << "DEBUG " << galaxy.vel.size() << "   " << galaxy.col.size() <<std::endl;
     tree->releaseGalaxy(galaxy);
 	user_particles[user_id] += galaxy.pos.size();
 
