@@ -98,9 +98,9 @@ void read_tipsy_file_parallel(std::vector<real4> &bodyPositions, std::vector<rea
       velocity.y        = d.vel[1];
       velocity.z        = d.vel[2];
       idummy            = d.phi;
-      color.x		= 1.0; // no colors from tipsy for dark matter
+      color.x		= 0.0; // no colors from tipsy for dark matter
       color.y		= 0.0;
-      color.z		= 0.0;    
+      color.z		= 1.0;    
       color.w		= 1.0;      
     }
     else

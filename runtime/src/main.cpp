@@ -1326,8 +1326,15 @@ int main(int argc, char** argv)
     tree->localTree.bodies_pos[i] = bodyPositions[i];
     tree->localTree.bodies_vel[i] = bodyVelocities[i];
     tree->localTree.bodies_col[i] = bodyColors[i];
+//     real4 cc =  bodyColors[i];
+// //     printf("colors: %f %f %f ", cc.x, cc.y, cc.z);
+//     printf("colors: %f %f %f ", bodyColors[i].x, bodyColors[i].y, bodyColors[i].z);
+    
+/*    real4 cc2 =  tree->localTree.bodies_col[i];
+    printf("colors: %f %f %f ", cc2.x, cc2.y, cc2.z);   */ 
+    
     tree->localTree.bodies_ids[i] = bodyIDs[i];
-
+    
     tree->localTree.bodies_Ppos[i] = bodyPositions[i];
     tree->localTree.bodies_Pvel[i] = bodyVelocities[i];
     tree->localTree.bodies_time[i] = make_float2(tree->get_t_current(), tree->get_t_current());

@@ -1188,7 +1188,17 @@ public:
 
    int n = m_tree->localTree.n + m_tree->localTree.n_dust;   
    //Above is safe since it is 0 if we dont use dust
-
+  
+//    float4 cl = make_float4(m_tree->localTree.bodies_col);   
+//     std::cout << "bla " << m_tree->localTree.bodies_col[0] << std::endl;   
+//    std::cout << "bla " <<bodyColors[0] << std::endl;    
+    
+//    //works
+    real4 cc2 =  m_tree->localTree.bodies_col[60];
+//     printf("colors: %f %f %f ", cc2.x, cc2.y, cc2.z);    
+   
+   
+   
     #ifdef USE_DUST
      //We move the dust data into the position data (on the device :) )
      m_tree->localTree.bodies_pos.copy_devonly(m_tree->localTree.dust_pos,
@@ -1285,7 +1295,7 @@ public:
 		m_renderer.setColors((float*)colors);
 #else  /* eg: assign colours on the device */
 		const float Tcurrent = m_tree->get_t_current() * 9.78f;
-		assignColors( m_particleColorsDev, (int*)m_tree->localTree.bodies_ids.d(), n, 
+		assignColors( m_particleColorsDev,(int*)m_tree->localTree.bodies_ids.d(), (float4*)m_tree->localTree.bodies_col.d(), n, // //  localTree.bodies_col //, (int)m_tree->localTree.bodies_col.d()   ,(float4*)m_tree->localTree.bodies_col.d() //(my_dev::dev_mem<float4>)m_tree->localTree.bodies_col
 				color2, color3, color4, starColor, bulgeColor, darkMatterColor, dustColor, m_brightFreq, 
 				make_float4(
 					Tcurrent, TstartGlow,
@@ -1301,6 +1311,7 @@ public:
     //m_tree->localTree.bodies_pos.d2h(); m_renderer.setPositions((float *) &m_tree->localTree.bodies_pos[0]);
     
     m_renderer.depthSort((float4*)m_tree->localTree.bodies_pos.d());
+    m_renderer.depthSort((float4*)m_tree->localTree.bodies_col.d());
 
   }
 
