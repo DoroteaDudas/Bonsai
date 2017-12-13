@@ -905,12 +905,14 @@ bool octree::iterate_once(IterationData &idata) {
         double tDens0 = get_time();
         localTree.bodies_pos.d2h();
         localTree.bodies_vel.d2h();
+	localTree.bodies_col.d2h();
         localTree.bodies_ids.d2h();
 
         double tDens1 = get_time();
         const DENSITY dens(procId, nProcs, localTree.n,
                            &localTree.bodies_pos[0],
                            &localTree.bodies_vel[0],
+// 			   &localTree.bodies_col[0],
                            &localTree.bodies_ids[0],
                            1, 2.33e9, 20, "density", t_current);
 
@@ -921,6 +923,7 @@ bool octree::iterate_once(IterationData &idata) {
         const DISKSTATS diskstats(procId, nProcs, localTree.n,
                            &localTree.bodies_pos[0],
                            &localTree.bodies_vel[0],
+// 			   &localTree.bodies_col[0],
                            &localTree.bodies_ids[0],
                            1, 2.33e9, "diskstats", t_current);
 
@@ -949,6 +952,7 @@ bool octree::iterate_once(IterationData &idata) {
 
         localTree.bodies_pos.d2h();
         localTree.bodies_vel.d2h();
+	localTree.bodies_col.d2h();
         localTree.bodies_ids.d2h();
 
         if(nProcs <= 16)
@@ -1130,6 +1134,7 @@ void octree::iterate_setup(IterationData &idata) {
 
         localTree.bodies_pos.d2h();
         localTree.bodies_vel.d2h();
+	localTree.bodies_col.d2h();
         localTree.bodies_ids.d2h();
 
         if(nProcs <= 16)
@@ -1155,12 +1160,14 @@ void octree::iterate_setup(IterationData &idata) {
       double tDens0 = get_time();
       localTree.bodies_pos.d2h();
       localTree.bodies_vel.d2h();
+      localTree.bodies_col.d2h();
       localTree.bodies_ids.d2h();
 
       double tDens1 = get_time();
       const DENSITY dens(procId, nProcs, localTree.n,
                          &localTree.bodies_pos[0],
                          &localTree.bodies_vel[0],
+// 			 &localTree.bodies_col[0],
                          &localTree.bodies_ids[0],
                          1, 2.33e9, 20, "density", t_current);
 
@@ -1171,6 +1178,7 @@ void octree::iterate_setup(IterationData &idata) {
       const DISKSTATS diskstats(procId, nProcs, localTree.n,
                          &localTree.bodies_pos[0],
                          &localTree.bodies_vel[0],
+// 			 &localTree.bodies_col[0],
                          &localTree.bodies_ids[0],
                          1, 2.33e9, "diskstats", t_current);
 

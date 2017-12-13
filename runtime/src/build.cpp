@@ -156,7 +156,7 @@ void octree::reallocateParticleMemory(tree_structure &tree)
   tree.bodies_Pvel.cresize(n_bodies+1, reduce);   //Memory to store predicted velocities
 
   tree.bodies_vel.cresize (n_bodies, reduce);
-  tree.bodies_col.cresize (n_bodies, reduce);   //Memory to store predicted colors  
+  tree.bodies_col.cresize (n_bodies, reduce);    //Memory to store colors  
   tree.bodies_acc0.cresize(n_bodies, reduce);    //ccalloc -> init to 0
   tree.bodies_acc1.cresize(n_bodies, reduce);    //ccalloc -> init to 0
   tree.bodies_time.cresize(n_bodies, reduce);    //ccalloc -> init to 0

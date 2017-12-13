@@ -600,12 +600,11 @@ int main(int argc, char** argv)
   vector<real4> bodyVelocities;
   vector<real4> bodyColors;  
   vector<int>   bodyIDs;
-  //vector<real4> bodyRgba;
 
   vector<real4> dustPositions;
   vector<real4> dustVelocities;
   vector<int>   dustIDs;  
-  
+  printf("color per particle not implemented for the dust!\n");
 
   float eps      = 0.05f;
   float theta    = 0.75f;
@@ -1036,6 +1035,7 @@ int main(int argc, char** argv)
 #ifdef WAR_OF_GALAXIES
       std::cout << "WarOfGalaxies: Input file is used as dummy particles." << std::endl;
       for (auto & id : bodyIDs) id = id - id % 10 + 9;
+//    for (auto & id : bodyIDs) id = id; //unique id's, but player determination messed up (also in WOGManager.cpp for the general files)
 
       // get center of mass
       real mass;
@@ -1072,8 +1072,9 @@ int main(int argc, char** argv)
       for (auto &p : bodyPositions)
       {
         p.x -= center_of_mass.x;
-        p.y -= center_of_mass.y;
-        p.z -= center_of_mass.z + 10000;
+	p.y -= center_of_mass.y;//see the dummy particles
+// 	p.z -= center_of_mass.z + 10000;//hide the dummy particles
+	p.z -= center_of_mass.z;
       }
 
       // steady
@@ -1320,21 +1321,17 @@ int main(int argc, char** argv)
   tree->localTree.setN((int)bodyPositions.size());
   tree->allocateParticleMemory(tree->localTree);
 
+//   printf("number of particles %d\n",bodyPositions.size());
+  
   //Load data onto the device
   for(uint i=0; i < bodyPositions.size(); i++)
   {
     tree->localTree.bodies_pos[i] = bodyPositions[i];
     tree->localTree.bodies_vel[i] = bodyVelocities[i];
     tree->localTree.bodies_col[i] = bodyColors[i];
-//     real4 cc =  bodyColors[i];
-// //     printf("colors: %f %f %f ", cc.x, cc.y, cc.z);
-//     printf("colors: %f %f %f ", bodyColors[i].x, bodyColors[i].y, bodyColors[i].z);
-    
-/*    real4 cc2 =  tree->localTree.bodies_col[i];
-    printf("colors: %f %f %f ", cc2.x, cc2.y, cc2.z);   */ 
-    
+//  real4 cc2 =  tree->localTree.bodies_col[i];
+//  printf("colors: %d %f %f %f %f\n", i, cc2.x, cc2.y, cc2.z, cc2.w);    
     tree->localTree.bodies_ids[i] = bodyIDs[i];
-    
     tree->localTree.bodies_Ppos[i] = bodyPositions[i];
     tree->localTree.bodies_Pvel[i] = bodyVelocities[i];
     tree->localTree.bodies_time[i] = make_float2(tree->get_t_current(), tree->get_t_current());

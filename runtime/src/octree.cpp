@@ -201,7 +201,11 @@ void octree::write_snapshot_per_process(real4 *bodyPositions, real4 *bodyVelocit
         d.vel[1] = bodyVelocities[i].y;
         d.vel[2] = bodyVelocities[i].z;
         d.phi = bodyIds[i];      //Custom change to tipsy format
-
+//         d.col[0] = bodyColors[i].x;
+//         d.col[1] = bodyColors[i].y;
+//         d.col[2] = bodyColors[i].z;
+        
+        
         outputFile.write((char*)&d, sizeof(d));
       } //end if
     } //end i loop
@@ -222,6 +226,9 @@ void octree::write_snapshot_per_process(real4 *bodyPositions, real4 *bodyVelocit
         s.vel[1] = bodyVelocities[i].y;
         s.vel[2] = bodyVelocities[i].z;
         s.phi = bodyIds[i];      //Custom change to tipsy format
+//         s.col[0] = bodyColors[i].x;
+//         s.col[1] = bodyColors[i].y;
+//         s.col[2] = bodyColors[i].z;        
 
         s.metals = 0;
         s.tform = 0;

@@ -178,30 +178,7 @@ KERNEL_DECLARE(assignColorsKernel) (float4 *colors, int *ids, float4 *col, int n
 	int tid = blockIdx.x * blockDim.x + threadIdx.x;
 	if( tid >= numParticles ) return;
 
-// 	int id =  ids[tid];
 	int id =  ids[tid];
-
-  
-// 	int idx = threadIdx.x + blockDim.x * blockIdx.x;
-// 	int idy = threadIdx.y + blockDim.y * blockIdx.y;
-// 	int idz = threadIdx.z + blockDim.z * blockIdx.z;
-	
-// 	uint bid = blockIdx.y * gridDim.x + blockIdx.x;
-// 	uint tid = threadIdx.x;
-// 	uint id  = bid * blockDim.x + tid;	
-	
-// 	int bid = blockIdx.y * gridDim.x + blockIdx.x;
-// 	int tid = threadIdx.x;
-// 	int id  = bid * blockDim.x + tid;	
-
-//   const int bid =  blockIdx.y *  gridDim.x +  blockIdx.x;
-//   const int ttid = threadIdx.y * blockDim.x + threadIdx.x;
-//   const int dim =  blockDim.x * blockDim.y;
-//   int id = bid * dim + ttid;
-
-
-
-
 	
 	float r = frand(id);
 	//float4 color = { r, 1-r, 0.5f, 1.0f };
@@ -344,12 +321,14 @@ KERNEL_DECLARE(assignColorsKernel) (float4 *colors, int *ids, float4 *col, int n
 // 		//colors[i] = darkMatterColor * make_float4(r, r, r, 1.0f);
 // 	}            		
 	
+	
 // 	color = make_float4(1.0f, 1.0f, 1.0f, 0.0f);
-// 	color.x = col[tid].x;
 // 	colors[tid] = color;
 
 	
-// 	//star start from 		100 000 000
+	
+	
+// 	//stars start from 		100 000 000
 // 	//dark matter starts from 	200 000 000
 // 	if(id > 100000000 && id < 200000000){
 // 	      color = make_float4(1.0f, 0.0f, 0.0f, 1.0f);   
@@ -364,49 +343,11 @@ KERNEL_DECLARE(assignColorsKernel) (float4 *colors, int *ids, float4 *col, int n
 // 	color = make_float4(1.0f, 1.0f, 1.0f, 0.0f);
 
 	
-	
-	
-	
-	
-	
-	
-// 	float4 
-// 	color = make_float4(0.0f, 1.0f, 0.0f, 0.0f);	
-// 	colors[tid] = color;
-	
-	
-// 	color = col[tid];
-// // 	color.z = 0.5;
-// 	color.w = 0.96;
-// // 	if(id >= 200000000){
-// // 	    color.x = 0.0;
-// // 	    color.y = 0.0;
-// // 	    color.z = 1.0;
-// // 	}
-// 	colors[tid] = color;
-	
-	
-	
-	if(id >= 200000000){
-// 	      color = make_float4(0.0f, 0.1f, 0.0f, 0.0f);
-	      color = make_float4(0.0f, 0.0f, 0.1f, 0.5f);
-	}
-	else{
-// 	      color = make_float4(1.0f, 1.0f, 1.0f, 1.0f);
-	      color = col[tid];
-	      color.w = 0.96;
-// 	      color = make_float4(col[tid].x, 0.0, 0.1, 0.0f);
-	}	
-// 	color = make_float4(col[tid].y, 0.0f, 0.05f, 0.0f);
-// 	color = make_float4(20.f, 0.0f, 0.05f, 0.0f);
-// 	colors[id] = color;
-// 	color = col[ttid];
+
+// 	color = col[tid+63];
+	color = col[tid];
 	colors[tid] = color;
-// 	colors[bid] = color;
-	
-// 	color = col[bid];
-// // 	color = make_float4(col[idx].x, col[idy].y, col[idz].z, 0.0f);
-// 	colors[bid] = color;
+
 }
 #endif
 
@@ -417,15 +358,8 @@ void assignColors(float4 *colors, int *ids, float4 *col, int numParticles, //int
 		int m_brightFreq, float4  t_current)
 {
 	int numThreads = 256;
-// 	printf("bla bla %f %f %f",col.x, col.y, col.z);//col as float4
-// // 	printf("bla bla %f ",*col);
-// // 	int i;
-// 	printf("bla size %li ",sizeof(*col));
-// // 	printf("bla element %f ",col[0].x);
-// // 	for (i=0;i < (sizeof(*col) /sizeof(col[0]));i++) {
-// // 	    printf("bla %lf \n",col[i].x);
-// // 	}
-
+// 	printf("number of particles %d\n",numParticles);
+	
 	int numBlocks = (numParticles + numThreads - 1) / numThreads;
 	assignColorsKernel<<< numBlocks, numThreads >>>(colors, ids, col, numParticles, 
 			color2, color3, color4, starColor, bulgeColor, darkMatterColor, dustColor, m_brightFreq, t_current);
