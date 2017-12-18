@@ -45,6 +45,23 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
     //rgba[1] = lin_to_log(lg / lmax, 1e1);
     //rgba[2] = lin_to_log(lb / lmax, 1e1);
     rgba[3] = 1.0;
+
+    // color magic:
+    if (fabs(rgba[2] - rgba[0]) < 0.3) {
+        // purple become yellow
+        rgba[0] = 0.5;
+        rgba[1] = 0.5;
+        rgba[2] = 0.;
+    }
+    if (rgba[2] > rgba[0]+0.2) {
+        // blue
+        rgba[0] = 1. - rgba[2];
+        rgba[1] /= 2;
+    } else {
+        // red
+        rgba[2] = 1. - rgba[0];
+        rgba[1] /= 2;
+    }
 }
 
 
@@ -117,11 +134,15 @@ int main(int argc, char* argv[])
             }
 
             std::stringstream linestream(line);
-            float posx, posy, posz, velx, vely, velz, mass, lb, lg, lr, flag;
+            float posx, posy, posz, velx, vely, velz, mass, lb, lg, lr, m_ini, age, flag;
+            float r;
             int idx;
-            linestream >> posx >> posy >> posz >> velx >> vely >> velz >> mass >> lb >> lg >> lr >> flag;
+            linestream >> posx >> posy >> posz
+                       >> velx >> vely >> velz
+                       >> mass >> lb >> lg >> lr >> m_ini 
+                       >> age >> flag;
             // ASCII file:
-            // pos[xyz] in kpc, vel[xyz] in km/s, mass in Msun, l[bgr] in erg/s
+            // pos[xyz] in kpc, vel[xyz] in km/s, mass in Msun, l[bgr] in erg/s, m_ini in Msun, age in Gyr
 
             if (flag == 1) {
                 // dark matter
@@ -150,6 +171,21 @@ int main(int argc, char* argv[])
                 //rgba[1] = (id_s+1)%3==0 ? 1. : 0.;
                 //rgba[2] = (id_s+2)%3==0 ? 1. : 0.;
 
+                if (age < 2.) {
+                    std::cout << "---- age " << age << std::endl;
+                    rgba[0] = 0.;
+                    rgba[1] = 0.;
+                    rgba[2] = 1.;
+                    rgba[3] = 1.;
+                }
+                r = sqrt(posx*posx + posy*posy + posz*posz);
+                if (r > 3. && age < 3. && id_s % 4 == 0) {
+                    rgba[0] = 0.;
+                    rgba[1] = 0.;
+                    rgba[2] = 0.;
+                    rgba[3] = 1.;
+                    std::cout << "--- black---" << std::endl;
+                }
                 star_particle s(mass/MSUN,
                                 posx/KPC, posy/KPC, posz/KPC,
                                 velx/KMS, vely/KMS, velz/KMS,
