@@ -1,8 +1,9 @@
 #include <algorithm>  // std::max
+#include <cstring>
 #include <fstream>
 #include <iostream>
+#include <cmath>
 #include <sstream>
-#include <string.h>
 #include <vector>
 #include "tipsy.h"
 
@@ -14,6 +15,37 @@ const int INDEX_S_START = 100000000;
 const float MSUN = 2.324876e9f;
 const float KMS = 100.0f;
 const float KPC = 1.0f;
+
+float lin_to_log(float value, float dynrange) {
+    // logarithmically scale input value, dynrange defines dynamics range (>1)
+    // [1/dynrange, 1] --> [0...1]
+    float f = 0.;
+    f = std::max(1/dynrange, value);
+    f = log10(f) / log10(dynrange) + 1;
+    f = std::min(1.f, f);
+    f = std::max(0.f, f);
+    return f;
+}
+
+void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
+    // rgb from log-scaled luminositiestest hack 
+    // though physically not correct to sum this up...
+
+    // rescale (from looking at color distribition)
+    lr *= 1.;
+    lg *= 20.;
+    lb *= 30.;
+    float lmax = std::max(lr, std::max(lb, lg));
+
+    rgba[0] = lr / lmax;
+    rgba[1] = lg / lmax;
+    rgba[2] = lb / lmax;
+    // commented lin-log out because this makes everything too whitish!
+    //rgba[0] = lin_to_log(lr / lmax, 1e1);
+    //rgba[1] = lin_to_log(lg / lmax, 1e1);
+    //rgba[2] = lin_to_log(lb / lmax, 1e1);
+    rgba[3] = 1.0;
+}
 
 
 int main(int argc, char* argv[])
@@ -44,8 +76,6 @@ int main(int argc, char* argv[])
     }
     std::cout << "reduce_bodies_factor: " << reduce_bodies_factor << std::endl;
 
-    
-    
     std::ifstream infile(inname);
     std::string line;
 
@@ -59,6 +89,17 @@ int main(int argc, char* argv[])
     float m_d = 0.0f;
 
     int particles_read = 0;
+
+//     std::cout << "Logscale test: " << lin_to_log(0., 1000.) << "  "
+//                                 << lin_to_log(0.01, 1000) << "  "
+//                                 << lin_to_log(1.0, 1000.) << "  "
+//                                 << lin_to_log(0.5, 1000.) << "  "
+//                                 << lin_to_log(2.5, 1000.) << "  "
+//                                 << lin_to_log(0.02, 1000.) << "  "
+//                                 << std::endl;
+//     exit(0);
+
+
 
     while(std::getline(infile, line)) {
 
@@ -76,22 +117,22 @@ int main(int argc, char* argv[])
             }
 
             std::stringstream linestream(line);
-            float posx, posy, posz, velx, vely, velz, mass, L_B, L_G, L_R, flag;
+            float posx, posy, posz, velx, vely, velz, mass, lb, lg, lr, flag;
             int idx;
-            linestream >> posx >> posy >> posz >> velx >> vely >> velz >> mass >> L_B >> L_G >> L_R >> flag;
+            linestream >> posx >> posy >> posz >> velx >> vely >> velz >> mass >> lb >> lg >> lr >> flag;
             // ASCII file:
-            // pos[xyz] in kpc, vel[xyz] in km/s, mass in Msun, L_[BGR] in erg/s
+            // pos[xyz] in kpc, vel[xyz] in km/s, mass in Msun, l[bgr] in erg/s
 
             if (flag == 1) {
                 // dark matter
 
-                std::cout << "dm particle id=" << id_d << ": mass=" << mass << std::endl;
                 dark_particle d(mass/MSUN,
                                 posx/KPC, posy/KPC, posz/KPC,
                                 velx/KMS, vely/KMS, velz/KMS,
-                                0.0f, 
+                                0.0f,
                                 id_d);
                 m_d += mass/MSUN;
+                std::cout << "dm particle id=" << id_d << ": mass=" << mass << std::endl;
                 vd.push_back(d);  // add to end of vector
 
                 id_d += 1;
@@ -100,17 +141,24 @@ int main(int argc, char* argv[])
             } else if (flag == 4) {
                 // star
 
-                // test hack:
-                float L_max = std::max(std::max(L_B, L_G), L_R);
-                std::cout << "star particle id=" << id_s << ": mass=" << mass << std::endl;
-                star_particle s(mass/MSUN, 
+                // rgb from luminosity:
+                float rgba[4];
+                lum_to_rgb(rgba, lr, lg, lb);
+
+                // artificial "random" coloring:
+                //rgba[0] = (id_s+0)%3==0 ? 1. : 0.;
+                //rgba[1] = (id_s+1)%3==0 ? 1. : 0.;
+                //rgba[2] = (id_s+2)%3==0 ? 1. : 0.;
+
+                star_particle s(mass/MSUN,
                                 posx/KPC, posy/KPC, posz/KPC,
                                 velx/KMS, vely/KMS, velz/KMS,
                                 0.0f, 0.0f, 0.0f,
                                 id_s,
-                                L_R/L_max, L_G/L_max, L_B/L_max, 1.0   // rgba 0...1
+                                rgba[0], rgba[1], rgba[2], rgba[3]
                                );
                 m_s += mass/MSUN;
+                std::cout << "star particle id=" << id_s << ": mass=" << mass << " rgb=" << rgba[0] << "," << rgba[1] << "," << rgba[2] << std::endl;
                 vs.push_back(s);  // add to end of vector
 
                 id_s += 1;
