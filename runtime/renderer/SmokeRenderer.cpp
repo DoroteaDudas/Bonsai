@@ -118,7 +118,7 @@ SmokeRenderer::SmokeRenderer(int numParticles, int maxParticles) :
     mVelVbo(0),
     mColorVbo(0),
     mIndexBuffer(0),
-    mParticleRadius(1.1f),
+    mParticleRadius(0.144f),//0.7f
 	mDisplayMode(SPRITES),//POINTS, SPRITES, VOLUMETRIC, NUM_MODES
     mWindowW(800),
     mWindowH(600),
@@ -128,8 +128,8 @@ SmokeRenderer::SmokeRenderer(int numParticles, int maxParticles) :
     m_numSlices(94),
 	m_numDisplayedSlices(m_numSlices),
     m_sliceNo(0),
-    m_shadowAlpha(1.0f),
-    m_spriteAlpha(1.0f),
+    m_shadowAlpha(0.268f),//0.644f
+    m_spriteAlpha(0.868f),//
     m_volumeAlpha(0.2f),
 	m_dustAlpha(1.0f),
     m_volumeColor(0.5f, 0.0f, 0.0f),
@@ -158,10 +158,10 @@ SmokeRenderer::SmokeRenderer(int numParticles, int maxParticles) :
 	m_starBlurRadius(40.0f),
 	m_starThreshold(1.0f),
     m_starPower(72.0f),
-	m_starIntensity(0.6f),
-	m_glowRadius(51.0f),
+	m_starIntensity(0.001f),//0.003
+	m_glowRadius(6.4f),//40
     m_glowIntensity(0.5f),
-	m_ageScale(10.0f),
+	m_ageScale(20.0f),
 	m_enableVolume(false),
 	m_enableFilters(true),
     m_noiseFreq(0.05f),
@@ -170,16 +170,16 @@ SmokeRenderer::SmokeRenderer(int numParticles, int maxParticles) :
     m_volumeIndirect(10.5f),
 	m_volumeStart(0.5f),
 	m_volumeWidth(0.1f),
-	m_gamma(1.0f / 2.2f),
-// 	m_gamma(0.0f ),
+// 	m_gamma(1.0f / 2.2f),
+	m_gamma(0.5f ),
 	m_fog(0.001f),
     m_cubemapTex(0),
     m_flareThreshold(5.5f),
-    m_flareIntensity(0.4f),
-    m_sourceIntensity(12.5f),
-    m_flareRadius(50.0f),
+    m_flareIntensity(0.164f),
+    m_sourceIntensity(10.5f),
+    m_flareRadius(3.2f),
     m_skyboxBrightness(0.5f),
-    m_transmission(0.0f),
+    m_transmission(0.176f),
     m_cullDarkMatter(true)
 
 {

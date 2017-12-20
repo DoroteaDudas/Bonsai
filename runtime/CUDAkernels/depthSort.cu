@@ -344,9 +344,47 @@ KERNEL_DECLARE(assignColorsKernel) (float4 *colors, int *ids, float4 *col, int n
 
 	
 
-// 	color = col[tid+63];
-	color = col[tid];
+// // 	color = col[tid+63];	
+// 	color = col[tid];	
+// 	colors[tid] = color;	
+	
+	if(id > 100000000 && id < 200000000){
+// 	  	color = make_float4(1.0f, 0.0f, 1.0f, 1.0f);  
+// 	 	color = col[tid];  
+	  
+	  
+		//sparkling particles (every Xth)
+// 	        color = ((id%1230) == 0) ? color3 : col[tid];
+// 		color = ((id%1000) == 1) ? color3 : make_float4(col[tid].x,col[tid].y,col[tid].z,col[tid].w*0.9);
+		color = (((id%1000) == 0) || ((id%1000) == 1) || ((id%1000) == 2) || ((id%1000) == 3)) ? color3 : make_float4(col[tid].x,col[tid].y,col[tid].z,col[tid].w*0.9);//shiny particles for all players!
+		//boost the blues
+		if(color.z > 0.5) color.w = 1.0;
+// 		//dust (if black particle -> render dust)
+// // 		if(color.z > 0.5) color = dustColor * make_float4(0.0, 0.0, r, 1.0f);
+// // 		color = ((id%230) == 0) ? dustColor *  make_float4(0.0, 0.0, r*1.0, 1.0f) : make_float4(col[tid].x,col[tid].y,col[tid].z,col[tid].w*0.9);
+// 		if(color.x == 0.0 && color.y == 0.0 && color.z == 0.0) color = dustColor *  make_float4(r, r, r, 1.0f);
+		
+		
+		//just test
+// // 		color = make_float4(0.0f, 1.0f, 1.0f, 1.0f); 
+// // 		if((id - 100000000) < 16500) color = make_float4(1.0f, 1.0f, 0.0f, 1.0f);  
+		if((id - 100000000) < 10000)  {color.x += 0.15;color.y += 0.15;} //boost red and green (yellow in the inside)
+// 		if((id - 100000000) > 16500 && (id - 100000000) < 22000)  {color.x += 0.15;} //boost red further 
+
+	  
+		//push the particles into a certain color based on the player
+// 		color = col[tid];  
+		if(id % 10 == 0) color.z += 0.5;  //player 1 - blue
+		if(id % 10 == 1) {color.x += 0.5;color.z += 0.5;}  //player 2 - purple
+		if(id % 10 == 2) color.y += 0.5;  //player 3 - green
+		if(id % 10 == 3) color.x += 0.8;  //player 4 - red
+
+	}
+	else{
+	  color = col[tid];
+	}
 	colors[tid] = color;
+	
 
 }
 #endif

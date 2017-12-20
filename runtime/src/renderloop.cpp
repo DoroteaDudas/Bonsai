@@ -1438,11 +1438,11 @@ public:
 
     bulgeColor = make_float4(1.0f, 1.0f, 0.5f, 2.0f);  // yellowish
 
-    //dustColor = make_float4(0.0f, 0.0f, 0.1f, 0.0f);      // blue
-    //dustColor =  make_float4(0.1f, 0.1f, 0.1f, 0.0f);    // grey
-    dustColor = make_float4(0.05f, 0.02f, 0.0f, 0.0f);  // brownish
+//     dustColor = make_float4(0.0f, 0.0f, 0.1f, 0.0f);      // blue
+//     dustColor =  make_float4(0.1f, 0.1f, 0.1f, 0.0f);    // grey
+//     dustColor = make_float4(0.05f, 0.02f, 0.0f, 0.0f);  // brownish
     //dustColor = make_float4(0.0f, 0.2f, 0.1f, 0.0f);  // green
-    //dustColor = make_float4(0.0f, 0.0f, 0.0f, 0.0f);  // black
+    dustColor = make_float4(0.0f, 0.0f, 0.0f, 0.0f);  // black
 
     darkMatterColor = make_float4(1.0f, 1.0f, 0.0f, 5.0f);      // blue
 
