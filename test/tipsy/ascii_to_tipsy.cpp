@@ -88,11 +88,11 @@ int main(int argc, char* argv[])
 
     // dumb option processing
     for (int i = 3; i < argc; i++) {
-        std::cout << "argv " << i << " = " << argv[i] << std::endl;
+        //std::cout << "argv " << i << " = " << argv[i] << std::endl;
 
         // --reducebodies NUM
         if (strcmp(argv[i], "--reducebodies") == 0 && (i + 1) < argc) {
-            reduce_bodies_factor = atoi(argv[i]);
+            reduce_bodies_factor = atoi(argv[i+1]);
             if (reduce_bodies_factor == 0) {
                 std::cout << "Invalid value for reducebodies option" << std::endl;
                 return 1;
