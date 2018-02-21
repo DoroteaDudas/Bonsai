@@ -7,6 +7,12 @@
 #include <vector>
 #include "tipsy.h"
 
+// code version from git
+//#include "version.h"
+#ifndef GIT_VERSION
+#define GIT_VERSION "n/a"
+#endif
+
 const int INDEX_D_START = 200000000;
 const int INDEX_S_START = 100000000;
 
@@ -72,7 +78,8 @@ int main(int argc, char* argv[])
 
     if (argc < 3) {
         std::cerr << "Usage: " << argv[0]
-                  << " infile.ascii outfile.tipsy [--reducebodies INTEGER] [-v]" << std::endl;
+                  << " infile.ascii outfile.tipsy [--reducebodies INTEGER] [-v]" << std::endl
+                  << "[source version: " << GIT_VERSION << "]" << std::endl;
         return 1;
     } else {
         std::cout << "*** ascii_to_tipsy ***" << std::endl;
