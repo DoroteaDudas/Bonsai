@@ -150,6 +150,7 @@ int main(int argc, char* argv[])
             // parse data line
 
             // reduce particle number
+            // random picking should be safer though...
             if (particles_read % reduce_bodies_factor != 0) {
                 particles_read += 1;
                 continue;
@@ -165,6 +166,9 @@ int main(int argc, char* argv[])
                        >> age >> flag;
             // ASCII file:
             // pos[xyz] in kpc, vel[xyz] in km/s, mass in Msun, l[bgr] in erg/s, m_ini in Msun, age in Gyr
+
+            // compensate for reduced number of particles
+            mass *= reduce_bodies_factor;
 
             if (flag == 1) {
                 // dark matter
