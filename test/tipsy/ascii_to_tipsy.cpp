@@ -52,7 +52,7 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
     //rgba[2] = lin_to_log(lb / lmax, 1e1);
     rgba[3] = 1.0;
 
-    // color magic:
+    // color magic: make colors more promiment
     if (fabs(rgba[2] - rgba[0]) < 0.3) {
         // purple become yellow
         rgba[0] = 0.5;
@@ -85,9 +85,23 @@ void age_to_rgba(float rgba[4], float age) {
 
     float ramp = (6. - age) / 6. ;
     ramp = std::max(std::min(1.f, ramp), 0.f);  // clip to 0...1 range
-    rgba[0] = 1. - ramp;
-    rgba[1] = fabs(0.5 - ramp) / 5.;
-    rgba[2] = ramp;
+    float r, g, b;
+    float mixfactor = 0.5;
+
+    r  = 1. - ramp;
+    g = fabs(0.5 - ramp) / 4.;
+    b = ramp;
+
+    // normalize
+    float cmax =  std::max(r, std::max(b, g));
+    r /= cmax;
+    g /= cmax;
+    b /= cmax;
+
+    // mix with previous ("old") colors
+    rgba[0] = mixfactor * r + (1 - mixfactor) * rgba[0];
+    rgba[1] = mixfactor * g + (1 - mixfactor) * rgba[1];
+    rgba[2] = mixfactor * b + (1 - mixfactor) * rgba[2];
     rgba[3] = 1.;
 
 }
