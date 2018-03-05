@@ -83,10 +83,10 @@ void age_to_rgba(float rgba[4], float age) {
 //         rgba[3] = 1.;
 //     }
 
-    float ramp = (3. - age) / 3. ;
+    float ramp = (6. - age) / 6. ;
     ramp = std::max(std::min(1.f, ramp), 0.f);  // clip to 0...1 range
     rgba[0] = 1. - ramp;
-    rgba[1] = fabs(0.5 - ramp);
+    rgba[1] = fabs(0.5 - ramp) / 5.;
     rgba[2] = ramp;
     rgba[3] = 1.;
 
