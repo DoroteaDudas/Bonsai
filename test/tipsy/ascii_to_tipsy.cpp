@@ -52,22 +52,22 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
     //rgba[2] = lin_to_log(lb / lmax, 1e1);
     rgba[3] = 1.0;
 
-//     // color magic:
-//     if (fabs(rgba[2] - rgba[0]) < 0.3) {
-//         // purple become yellow
-//         rgba[0] = 0.5;
-//         rgba[1] = 0.5;
-//         rgba[2] = 0.;
-//     }
-//     if (rgba[2] > rgba[0]+0.2) {
-//         // blue
-//         rgba[0] = 1. - rgba[2];
-//         rgba[1] /= 2;
-//     } else {
-//         // red
-//         rgba[2] = 1. - rgba[0];
-//         rgba[1] /= 2;
-//     }
+    // color magic:
+    if (fabs(rgba[2] - rgba[0]) < 0.3) {
+        // purple become yellow
+        rgba[0] = 0.5;
+        rgba[1] = 0.5;
+        rgba[2] = 0.;
+    }
+    if (rgba[2] > rgba[0]+0.2) {
+        // blue
+        rgba[0] = 1. - rgba[2];
+        rgba[1] /= 2;
+    } else {
+        // red
+        rgba[2] = 1. - rgba[0];
+        rgba[1] /= 2;
+    }
 }
 
 
@@ -222,7 +222,7 @@ int main(int argc, char* argv[])
                 //rgba[2] = (id_s+2)%3==0 ? 1. : 0.;
 
                 // age-based re-coloring
-                //age_to_rgba(rgba, age);
+                age_to_rgba(rgba, age);
 
                 r = sqrt(posx*posx + posy*posy + posz*posz);
                 if (r > 3. && age < 3. && id_s % 4 == 0) {
