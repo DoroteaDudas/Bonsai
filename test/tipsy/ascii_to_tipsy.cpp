@@ -53,21 +53,21 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
     rgba[3] = 1.0;
 
     // color magic:
-//     if (fabs(rgba[2] - rgba[0]) < 0.3) {
-//         // purple become yellow
-//         rgba[0] = 0.5;
-//         rgba[1] = 0.5;
-//         rgba[2] = 0.;
-//     }
-//     if (rgba[2] > rgba[0]+0.2) {
-//         // blue
-//         rgba[0] = 1. - rgba[2];
-//         rgba[1] /= 2;
-//     } else {
-//         // red
-//         rgba[2] = 1. - rgba[0];
-//         rgba[1] /= 2;
-//     }
+    if (fabs(rgba[2] - rgba[0]) < 0.3) {
+        // purple become yellow
+        rgba[0] = 0.5;
+        rgba[1] = 0.5;
+        rgba[2] = 0.;
+    }
+    if (rgba[2] > rgba[0]+0.2) {
+        // blue
+        rgba[0] = 1. - rgba[2];
+        rgba[1] /= 2;
+    } else {
+        // red
+        rgba[2] = 1. - rgba[0];
+        rgba[1] /= 2;
+    }
 }
 
 
@@ -83,16 +83,11 @@ void age_to_rgba(float rgba[4], float age) {
 //         rgba[3] = 1.;
 //     }
 
-    float ramp = (6. - age) / 6. ;
+    float ramp = (3. - age) / 3. ;
     ramp = std::max(std::min(1.f, ramp), 0.f);  // clip to 0...1 range
-    float r, g, b;
-    float mixfactor = 0.5;
-    r  = 1. - ramp;
-    g = fabs(0.5 - ramp);
-    b = ramp;
-    rgba[0] = mixfactor * r + (1 - mixfactor) * rgba[0];
-    rgba[1] = mixfactor * g + (1 - mixfactor) * rgba[1];
-    rgba[2] = mixfactor * b + (1 - mixfactor) * rgba[2];
+    rgba[0] = 1. - ramp;
+    rgba[1] = fabs(0.5 - ramp);
+    rgba[2] = ramp;
     rgba[3] = 1.;
 
 }
