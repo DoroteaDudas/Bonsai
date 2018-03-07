@@ -39,8 +39,8 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
 
     // rescale (from looking at color distribition)
     lr *= 1.;
-    lg *= 20.;
-    lb *= 30.;
+    lg *= 15.;
+    lb *= 50.;
     float lmax = std::max(lr, std::max(lb, lg));
 
     rgba[0] = lr / lmax;
@@ -52,7 +52,7 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
     //rgba[2] = lin_to_log(lb / lmax, 1e1);
     rgba[3] = 1.0;
 
-    // color magic: make colors more promiment
+    // color magic:
     if (fabs(rgba[2] - rgba[0]) < 0.3) {
         // purple become yellow
         rgba[0] = 0.5;
@@ -68,42 +68,6 @@ void lum_to_rgb(float rgba[4], float lr, float lg, float lb) {
         rgba[2] = 1. - rgba[0];
         rgba[1] /= 2;
     }
-}
-
-
-void age_to_rgba(float rgba[4], float age) {
-
-//     if (age < 2.) {
-//         if (verbosity > 1) {
-//             std::cout << "# young age = " << age << std::endl;
-//         }
-//         rgba[0] = 0.;
-//         rgba[1] = 0.;
-//         rgba[2] = 1.;
-//         rgba[3] = 1.;
-//     }
-
-    float ramp = (6. - age) / 6. ;
-    ramp = std::max(std::min(1.f, ramp), 0.f);  // clip to 0...1 range
-    float r, g, b;
-    float mixfactor = 0.5;
-
-    r  = 1. - ramp;
-    g = fabs(0.5 - ramp) / 4.;
-    b = ramp;
-
-    // normalize
-    float cmax =  std::max(r, std::max(b, g));
-    r /= cmax;
-    g /= cmax;
-    b /= cmax;
-
-    // mix with previous ("old") colors
-    rgba[0] = mixfactor * r + (1 - mixfactor) * rgba[0];
-    rgba[1] = mixfactor * g + (1 - mixfactor) * rgba[1];
-    rgba[2] = mixfactor * b + (1 - mixfactor) * rgba[2];
-    rgba[3] = 1.;
-
 }
 
 
@@ -235,9 +199,15 @@ int main(int argc, char* argv[])
                 //rgba[1] = (id_s+1)%3==0 ? 1. : 0.;
                 //rgba[2] = (id_s+2)%3==0 ? 1. : 0.;
 
-                // age-based re-coloring
-                age_to_rgba(rgba, age);
-
+                if (age < 2.) {
+                    if (verbosity > 1) {
+                        std::cout << "# young age = " << age << std::endl;
+                    }
+                    rgba[0] = 0.;
+                    rgba[1] = 0.;
+                    rgba[2] = 1.;
+                    rgba[3] = 1.;
+                }
                 r = sqrt(posx*posx + posy*posy + posz*posz);
                 if (r > 3. && age < 3. && id_s % 4 == 0) {
                     rgba[0] = 0.;
